@@ -107,6 +107,9 @@ importers:
 
   apps/frontend:
     dependencies:
+      '@chat/types':
+        specifier: workspace:*
+        version: link:../../packages/types
       next:
         specifier: 15.3.2
         version: 15.3.2(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
