@@ -1,0 +1,4 @@
+{
+    "extends": "./tsconfig.json",
+    "include": ["src", "next.config.ts", "next-env.d.ts", "postcss.config.mjs"]
+}
