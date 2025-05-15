@@ -9,6 +9,7 @@
     },
     "dependencies": {
         "@chat/types": "workspace:*",
+        "clsx": "^2.1.1",
         "lucide-react": "^0.510.0",
         "next": "15.3.2",
         "react": "^19.0.0",
