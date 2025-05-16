@@ -4,7 +4,9 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 
+import { ACCESS_TOKEN, REFRESH_TOKEN } from '@/constants';
 import { useAppDispatch } from '@/hooks/store.hooks';
+import { saveToken } from '@/utils';
 
 import { Button, Input } from '@/components';
 import { useLoginMutation } from '@/store/auth/authApi';
@@ -30,6 +32,9 @@ const LoginForm = () => {
     const onSubmit = async (data: LoginFormData) => {
         try {
             const userData = await login(data).unwrap();
+            // Save tokens
+            saveToken(ACCESS_TOKEN, userData.accessToken);
+            saveToken(REFRESH_TOKEN, userData.refreshToken);
             dispatch(authActions.setCredentials(userData));
             navigate.push('/');
         } catch (err) {

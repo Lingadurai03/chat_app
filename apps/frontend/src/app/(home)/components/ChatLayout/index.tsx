@@ -6,9 +6,11 @@ import {
     FriendList,
     WelcomeMesageWindow,
 } from '@/app/(home)/components';
-import { isMobile } from '@/utils';
+import { ACCESS_TOKEN } from '@/constants';
+import { getToken, isMobile } from '@/utils';
 
 const ChatLayout = () => {
+    console.log(getToken(ACCESS_TOKEN));
     const [selectedFriend, setSelectedFriend] = useState<string | null>(null);
 
     const showFriendList = !isMobile || (isMobile && !selectedFriend);
