@@ -2,11 +2,16 @@
 
 import React from 'react';
 import { useForm } from 'react-hook-form';
+import { useRouter } from 'next/navigation';
+
+import { useAppDispatch } from '@/hooks/store.hooks';
 
 import { Button, Input } from '@/components';
+import { useLoginMutation } from '@/store/auth/authApi';
+import { authActions } from '@/store/auth/authSlice';
 
 interface LoginFormData {
-    userName: string;
+    userNameOrEmail: string;
     password: string;
 }
 
@@ -17,8 +22,19 @@ const LoginForm = () => {
         formState: { errors },
     } = useForm<LoginFormData>();
 
-    const onSubmit = (data: LoginFormData) => {
-        console.log('Login form submitted:', data);
+    const [login, { isLoading }] = useLoginMutation();
+
+    const dispatch = useAppDispatch();
+    const navigate = useRouter();
+
+    const onSubmit = async (data: LoginFormData) => {
+        try {
+            const userData = await login(data).unwrap();
+            dispatch(authActions.setCredentials(userData));
+            navigate.push('/');
+        } catch (err) {
+            console.error('Login failed:', err);
+        }
     };
     return (
         <form
@@ -30,8 +46,8 @@ const LoginForm = () => {
             </h2>
 
             <Input
-                label='Username'
-                registration={register('userName', {
+                label='Username or Email'
+                registration={register('userNameOrEmail', {
                     required: 'Username is required',
                 })}
                 error={errors.password}
@@ -45,7 +61,11 @@ const LoginForm = () => {
                 error={errors.password}
             />
 
-            <Button label='Submit' />
+            <Button
+                loading={isLoading}
+                loadingText='Submiting'
+                label='Submit'
+            />
         </form>
     );
 };
