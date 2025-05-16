@@ -1,17 +1,21 @@
 'use client';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 import {
     ChatWindow,
     FriendList,
     WelcomeMesageWindow,
 } from '@/app/(home)/components';
-import { ACCESS_TOKEN } from '@/constants';
-import { getToken, isMobile } from '@/utils';
+import { checkIsMobile } from '@/utils';
 
 const ChatLayout = () => {
-    console.log(getToken(ACCESS_TOKEN));
     const [selectedFriend, setSelectedFriend] = useState<string | null>(null);
+
+    const [isMobile, setIsMobile] = useState(false);
+
+    useEffect(() => {
+        setIsMobile(checkIsMobile());
+    }, []);
 
     const showFriendList = !isMobile || (isMobile && !selectedFriend);
     const showChat = !isMobile || (isMobile && selectedFriend);
