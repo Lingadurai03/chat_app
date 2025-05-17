@@ -16,10 +16,28 @@ model User {
 
   friends          Friend[]  @relation("UserFriends")
   friendOf         Friend[]  @relation("FriendRelation")
+
   messagesSent     Message[] @relation("MessageSender")
   messagesReceived Message[] @relation("MessageReceiver")
+
+  sentRequests     FriendRequest[] @relation("RequestSender")
+  receivedRequests FriendRequest[] @relation("RequestReceiver")
+
   createdAt        DateTime  @default(now())
 }
+
+model FriendRequest {
+  id         String   @id @default(uuid())
+
+  sender     User     @relation("RequestSender", fields: [senderId], references: [id])
+  senderId   String
+
+  receiver   User     @relation("RequestReceiver", fields: [receiverId], references: [id])
+  receiverId String
+
+  createdAt  DateTime @default(now())
+}
+
 
 model Friend {
   id        String   @id @default(uuid())
